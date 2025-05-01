@@ -25,7 +25,7 @@ proxy_user = "5f88d977c59b8866"
 proxy_pass = "RNW78Fm5"
 
 # 🔨 Create the extension files
-plugin_path = 'proxy_auth_plugin.zip'
+plugin_path = 'proxy_sauth_plugin.zip'
 
 manifest_json = """
 {
@@ -84,34 +84,13 @@ with zipfile.ZipFile(plugin_path, 'w') as zp:
 options = Options()
 options.add_extension(plugin_path)
 
-# proxy_server_url = "http://5f88d977c59b8866:RNW78Fm5@res.proxy-seller.com:10000"
-# print(proxy_server_url)
-# options.add_argument('--proxy-server=http://5f88d977c59b8866:RNW78Fm5@res.proxy-seller.com:10000')
-
-# options.add_argument("--no-sandbox")
-# options.add_argument("--disable-blink-features=AutomationControlled")
-# # Initialize the WebDriver options
-# options.add_argument("--disable-dev-shm-usage")
-# options.add_argument("--no-sandbox")
-# # options.add_argument('--no-proxy-server')
-# options.add_argument("--log-level=3")
-# options.add_argument("--incognito")
-
-# options.add_argument("--headless")  # Run headlessly if needed
-# options.add_argument("--disable-gpu")  # Disable GPU acceleration
-# options.add_argument("start-maximized")
-# options.add_argument("disable-infobars")
-# options.add_argument("--disable-extensions")
-
-
-# options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
-# options.add_experimental_option('useAutomationExtension', False)
-
 driver = webdriver.Chrome(
     # service=ChromeService(ChromeDriverManager().install()),
     options=options
 )
 # driver.get("https://ipinfo.io/json")
+
+
 driver.get("https://www.dlapiperdataprotection.com/?c=AL&c=DZ&c=AO&c=AR&c=AM&c=AW&c=AU&c=AT&c=AZ&c=BS&c=BH&c=BD&c=BB&c=BY&c=BE&c=BJ&c=BM&c=BO&c=BQ&c=BA&c=BW&c=BR&c=VG&c=BN&c=BG&c=BF&c=BI&c=KH&c=CM&c=CA&c=CV&c=KY&c=TD&c=CL&c=CN&c=CO&c=CI&c=CR&c=HR&c=CU&c=CW&c=CY&c=CZ&c=CD&c=DK&c=DO&c=EC&c=EG&c=SV&c=GQ&c=EE&c=ET&c=FM&c=FJ&c=FI&c=FR&c=GA&c=GE&c=DE&c=GH&c=GI&c=GR&c=GT&c=GG&c=GN&c=HT&c=HN&c=HK&c=HU&c=IS&c=IN&c=ID&c=IR&c=IE&c=IL&c=IT&c=JP&c=JE&c=JO&c=KZ&c=KE&c=XK&c=KW&c=KG&c=LA&c=LV&c=LB&c=LS&c=LR&c=LY&c=LT&c=LU&c=MO&c=MG&c=MY&c=MT&c=MU&c=MX&c=MD&c=MC&c=MN&c=ME&c=MA&c=MZ&c=MM&c=NA&c=NP&c=NL&c=NZ&c=NI&c=NE&c=NG&c=MK&c=NO&c=PK&c=PA&c=PY&c=PE&c=PH&c=PL&c=PT&c=QA&c=QA2&c=CG&c=RO&c=RU&c=RW&c=SA&c=SN&c=RS&c=SC&c=SG&c=SX&c=SK&c=SI&c=ZA&c=KR&c=ES&c=LK&c=SE&c=CH&c=TW&c=TJ&c=TZ&c=TH&c=TO&c=TT&c=TN&c=TR&c=TM&c=AE4&c=AE2&c=AE3&c=AE&c=UG&c=UA&c=GB&c=US&c=UY&c=UZ&c=VE&c=VN&c=ZM&c=ZW")
 time.sleep(random.uniform(0.5, 1))
 # driver.get("https://www.dlapiperdataprotection.com")
@@ -120,15 +99,7 @@ time.sleep(random.uniform(0.5, 1))
 try:
     # Perform CAPTCHA solving
     t0 = time.time()
-    # driver.find_element(By.ID, "subACK").click()
-    # driver.find_element(By.NAME, "submit").click()
     
-    # recaptchaSolver.solveCaptcha()
-    # time.sleep(random.uniform(100, 100))
-    # driver.find_element(By.NAME, "patient-powered-search-input").send_keys('Dentist')
-    # driver.find_element(By.NAME, "maxResult").clear()
-    # driver.find_element(By.NAME, "maxResult").send_keys('100')
-    # driver.find_element(By.CLASS_NAME, "sc-w1fnvw-5 SDjDR").click()
     print(f"Time to solve the captcha: {time.time() - t0:.2f} seconds")
     
     WebDriverWait(driver, 10).until(
