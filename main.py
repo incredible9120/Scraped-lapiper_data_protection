@@ -1,107 +1,52 @@
 from selenium import webdriver
-from RecaptchaSolver import RecaptchaSolver
-import time
-from selenium.webdriver.common.by import By
-import requests
-from bs4 import BeautifulSoup
-import csv
-from requests_html import HTMLSession
+from seleniumwire import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+from requests_html import HTMLSession
+from RecaptchaSolver import RecaptchaSolver
+from bs4 import BeautifulSoup
+
+import time
+import requests
+import csv
 import random
-import undetected_chromedriver as uc
-from selenium.webdriver.chrome.service import Service as ChromeService
 import zipfile
+import base64
 # from webdriver_manager.chrome import ChromeDriverManager
 
-options = Options()
-
-# Proxy details
-
-proxy_host = "res.proxy-seller.com"
+# configure the proxy
+proxy_username = "5f88d977c59b8866"
+proxy_password = "RNW78Fm5"
+proxy_address = "res.proxy-seller.com"
 proxy_port = "10000"
-proxy_user = "5f88d977c59b8866"
-proxy_pass = "RNW78Fm5"
 
-# 🔨 Create the extension files
-plugin_path = 'proxy_sauth_plugin.zip'
+# formulate the proxy url with authentication
+proxy_url = f"http://{proxy_username}:{proxy_password}@{proxy_address}:{proxy_port}"
 
-manifest_json = """
-{
-    "version": "1.0.0",
-    "manifest_version": 2,
-    "name": "Proxy Auth Extension",
-    "permissions": [
-        "proxy",
-        "tabs",
-        "unlimitedStorage",
-        "storage",
-        "<all_urls>",
-        "webRequest",
-        "webRequestBlocking"
-    ],
-    "background": {
-        "scripts": ["background.js"]
-    }
+# set selenium-wire options to use the proxy
+seleniumwire_options = {
+    "proxy": {"http": proxy_url, "https": proxy_url},
 }
-"""
 
-background_js = f"""
-var config = {{
-    mode: "fixed_servers",
-    rules: {{
-        singleProxy: {{
-            scheme: "http",
-            host: "{proxy_host}",
-            port: parseInt({proxy_port})
-        }},
-        bypassList: ["localhost"]
-    }}
-}};
-
-chrome.proxy.settings.set({{value: config, scope: "regular"}}, function() {{}});
-
-chrome.webRequest.onAuthRequired.addListener(
-    function(details, callbackFn) {{
-        callbackFn({{
-            authCredentials: {{
-                username: "{proxy_user}",
-                password: "{proxy_pass}"
-            }}
-        }});
-    }},
-    {{urls: ["<all_urls>"]}},
-    ['blocking']
-);
-"""
-
-with zipfile.ZipFile(plugin_path, 'w') as zp:
-    zp.writestr("manifest.json", manifest_json)
-    zp.writestr("background.js", background_js)
-
-# 🚀 Launch Chrome with extension
+# set Chrome options to run in headless mode
 options = Options()
-options.add_extension(plugin_path)
+# options.add_argument("--headless=new")
 
+# initialize the Chrome driver with service, selenium-wire options, and chrome options
 driver = webdriver.Chrome(
-    # service=ChromeService(ChromeDriverManager().install()),
-    options=options
+    service=Service(ChromeDriverManager().install()),
+    seleniumwire_options=seleniumwire_options,
+    options=options,
 )
-# driver.get("https://ipinfo.io/json")
-
 
 driver.get("https://www.dlapiperdataprotection.com/?c=AL&c=DZ&c=AO&c=AR&c=AM&c=AW&c=AU&c=AT&c=AZ&c=BS&c=BH&c=BD&c=BB&c=BY&c=BE&c=BJ&c=BM&c=BO&c=BQ&c=BA&c=BW&c=BR&c=VG&c=BN&c=BG&c=BF&c=BI&c=KH&c=CM&c=CA&c=CV&c=KY&c=TD&c=CL&c=CN&c=CO&c=CI&c=CR&c=HR&c=CU&c=CW&c=CY&c=CZ&c=CD&c=DK&c=DO&c=EC&c=EG&c=SV&c=GQ&c=EE&c=ET&c=FM&c=FJ&c=FI&c=FR&c=GA&c=GE&c=DE&c=GH&c=GI&c=GR&c=GT&c=GG&c=GN&c=HT&c=HN&c=HK&c=HU&c=IS&c=IN&c=ID&c=IR&c=IE&c=IL&c=IT&c=JP&c=JE&c=JO&c=KZ&c=KE&c=XK&c=KW&c=KG&c=LA&c=LV&c=LB&c=LS&c=LR&c=LY&c=LT&c=LU&c=MO&c=MG&c=MY&c=MT&c=MU&c=MX&c=MD&c=MC&c=MN&c=ME&c=MA&c=MZ&c=MM&c=NA&c=NP&c=NL&c=NZ&c=NI&c=NE&c=NG&c=MK&c=NO&c=PK&c=PA&c=PY&c=PE&c=PH&c=PL&c=PT&c=QA&c=QA2&c=CG&c=RO&c=RU&c=RW&c=SA&c=SN&c=RS&c=SC&c=SG&c=SX&c=SK&c=SI&c=ZA&c=KR&c=ES&c=LK&c=SE&c=CH&c=TW&c=TJ&c=TZ&c=TH&c=TO&c=TT&c=TN&c=TR&c=TM&c=AE4&c=AE2&c=AE3&c=AE&c=UG&c=UA&c=GB&c=US&c=UY&c=UZ&c=VE&c=VN&c=ZM&c=ZW")
-time.sleep(random.uniform(0.5, 1))
-# driver.get("https://www.dlapiperdataprotection.com")
-# recaptchaSolver = RecaptchaSolver(driver)
 
 try:
-    # Perform CAPTCHA solving
-    t0 = time.time()
-    
-    print(f"Time to solve the captcha: {time.time() - t0:.2f} seconds")
-    
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'single-accordion--desktop'))
     )
@@ -121,7 +66,7 @@ try:
         
         button = row.find('button')
         btn_txt = button.text
-        btn_txt.replace("Data protection laws in ", "")
+        btn_txt.replace("Data protection laws in", "")
         row_text.append(btn_txt)
         row_text.append(row.get_text())
         
