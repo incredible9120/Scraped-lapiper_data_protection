@@ -17,13 +17,12 @@ import csv
 import random
 import zipfile
 import base64
-# from webdriver_manager.chrome import ChromeDriverManager
 
-# configure the proxy
-proxy_username = "5f88d977c59b8866"
-proxy_password = "RNW78Fm5"
-proxy_address = "res.proxy-seller.com"
-proxy_port = "10000"
+from config import proxy_username
+from config import proxy_password
+from config import proxy_address
+from config import proxy_port
+# from webdriver_manager.chrome import ChromeDriverManager
 
 # formulate the proxy url with authentication
 proxy_url = f"http://{proxy_username}:{proxy_password}@{proxy_address}:{proxy_port}"

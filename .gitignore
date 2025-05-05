@@ -174,3 +174,5 @@ cython_debug/
 .pypirc
 .python-version
 proxy_auth_plugin.zip
+requirements.txt
+config.py
